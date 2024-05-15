@@ -6,7 +6,7 @@ socket.on("connect", (socket)=>{
 
 socket.on("Message",(data)=>{
     console.log("DATA from MESSAGE: ",data);
-    socket.emit("Message","All good bro");
+    socket.emit("Message","All good bro hhh");
 
 })
 
