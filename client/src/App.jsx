@@ -7,7 +7,6 @@ import Inputs from './component/Inputs';
 const socket = io('http://localhost:4000');
 
 function App() {
-  const [message, setMessage] = useState('');
   let [score, setScores] = useState({});
   let [globalScores, setGlobalScores] = useState([]);
 
@@ -36,7 +35,17 @@ function App() {
     });
   }
 
-  function emitMessage() {
+  function editData(item){
+    console.log(item);
+    setScores((prev) => {
+      return {
+       ...prev,
+        [item.name]: item.score
+      }
+    });
+  }
+
+  function onSubmit() {
     console.log("EMITED DATA: ", score);
     socket.emit("scores", score);
 
@@ -46,6 +55,10 @@ function App() {
       console.log("GLOBAL OBJ", globalScores)
     });
 
+  
+
+
+
   }
 
   useEffect(() => {
@@ -54,11 +67,11 @@ function App() {
 
   return (
     <>
-      <h1>Multi player dashboard {message}</h1>
-      <Inputs name="name" placeholder="Enter your name!" inputHandler={inputsHandler}></Inputs>
-      <Inputs name="score" placeholder="Your Score" inputHandler={inputsHandler}></Inputs>
+      <h1>Multi player dashboard</h1>
+      <Inputs name="name" placeholder="Enter your name!" value={inputsHandler.name} inputHandler={inputsHandler}></Inputs>
+      <Inputs name="score" placeholder="Your Score" value={inputsHandler.score} inputHandler={inputsHandler}></Inputs>
 
-      <button onClick={emitMessage}>Submit</button>
+      <button onClick={onSubmit}>Submit</button>
 
       <hr />
 
@@ -76,6 +89,8 @@ function App() {
                 <tr key={index}>
                   <td>{item.name}</td>
                   <td>{item.score}</td>
+                  <td><button onClick={()=>{editData(item)}}>Edit</button></td>
+                  <td><button onClick={()=>{console.log("Delete Called!")}}>Delete</button></td>
                 </tr>
               )
             })
