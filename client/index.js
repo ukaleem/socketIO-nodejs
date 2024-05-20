@@ -14,7 +14,8 @@ socket.on("message",(data)=>{
 
 function sendMessage(ev) {
     let messageVal = document.getElementById('messageRep');
-    console.log("im in",messageVal,ev);
+    console.log("im in",messageVal.value,ev);
+    socket.emit("message",`${messageVal.value}`);
 }
 
 
