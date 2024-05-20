@@ -13,11 +13,11 @@ socket.on("connection", (sio)=>{
     sio.on("scores",(data)=>{
         console.log(data);
         playersScores.push({...data, id:sio.id });
-        sio.emit("playersScores",playersScores);
     });
-
-    // setInterval(() => {
-    // }, 5000);
+    
+    setInterval(() => {
+        sio.emit("playersScores",playersScores);
+    }, 5000);
 
 });
 

@@ -28,9 +28,9 @@ function App() {
     socket.on("connect", () => {
       console.log(socket.id); // x8WIv7-mJelg7on_ALbx
 
-      socket.on("playersScores", (playersScores) => {
-        console.log("SERVER COMING DATA:  ", playersScores)
-        setGlobalScores(playersScores);
+      socket.on("playersScores", (ps) => {
+        console.log("ON LOAD SERVER DATA:  ", ps)
+        setGlobalScores(ps);
       });
 
     });
@@ -40,9 +40,10 @@ function App() {
     console.log("EMITED DATA: ", score);
     socket.emit("scores", score);
 
-    socket.on("playersScores", (playersScores) => {
-      console.log("SERVER RESP ", playersScores)
-      setGlobalScores(playersScores)
+    socket.on("playersScores", (ps) => {
+      console.log("ON SUBMIT SERVER RESP ", ps)
+      setGlobalScores(ps)
+      console.log("GLOBAL OBJ", globalScores)
     });
 
   }
@@ -54,21 +55,34 @@ function App() {
   return (
     <>
       <h1>Multi player dashboard {message}</h1>
-      <Inputs name="player-name" placeholder="Enter your name!" inputHandler={inputsHandler}></Inputs>
-      <Inputs name="player-score" placeholder="Your Score" inputHandler={inputsHandler}></Inputs>
+      <Inputs name="name" placeholder="Enter your name!" inputHandler={inputsHandler}></Inputs>
+      <Inputs name="score" placeholder="Your Score" inputHandler={inputsHandler}></Inputs>
 
       <button onClick={emitMessage}>Submit</button>
 
-      { globalScores.length>0 ? 
-      globalScores.map((s) => {
-        <div>
-          <h1>Player Name: {s.playerName}</h1>
-          <h1>Player Score: {s.playerScore}</h1>
-        </div>
-      })
-      : <></>
+      <hr />
 
-      }
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            globalScores.map((item, index) => {
+              return (
+                <tr key={index}>
+                  <td>{item.name}</td>
+                  <td>{item.score}</td>
+                </tr>
+              )
+            })
+          }
+
+        </tbody>
+      </table>
     </>
   )
 }
